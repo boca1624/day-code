@@ -1,24 +1,16 @@
-def binary_search(nums, target):
-    left, right = 0, len(nums) - 1
-    
-    while left <= right:
-        mid = left + (right - left) // 2
-        
-        # Check if the target is at mid
-        if nums[mid] == target:
-            return mid
-        
-        # If the left part is sorted
-        if nums[left] <= nums[mid]:
-            if nums[left] <= target < nums[mid]:
-                right = mid - 1
-            else:
-                left = mid + 1
-        # If the right part is sorted
-        else:
-            if nums[mid] < target <= nums[right]:
-                left = mid + 1
-            else:
-                right = mid - 1
-                
-    return -1
+def permute(nums):
+    def backtrack(start=0):
+        if start == len(nums):
+            res.append(nums[:])
+        for i in range(start, len(nums)):
+            nums[start], nums[i] = nums[i], nums[start]  # Swap to create permutation
+            backtrack(start + 1)  # Recurse
+            nums[start], nums[i] = nums[i], nums[start]  # Backtrack (restore state)
+
+    res = []
+    backtrack()
+    return res
+
+# Example usage
+nums = [1, 2, 3]
+print(permute(nums))
