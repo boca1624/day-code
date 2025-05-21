@@ -1,15 +1,23 @@
-class Solution:
-    def countPrimes(self, n: int) -> int:
-        if n <= 2:
-            return 0
+from collections import deque
+
+class MovingAverage:
+    def __init__(self, size: int):
+        self.size = size
+        self.queue = deque()
+        self.total = 0
+
+    def next(self, val: int) -> float:
+        if len(self.queue) == self.size:
+            self.total -= self.queue.popleft()
         
-        # 使用埃拉托斯特尼筛法（Sieve of Eratosthenes）
-        is_prime = [True] * n
-        is_prime[0], is_prime[1] = False, False
+        self.queue.append(val)
+        self.total += val
         
-        for i in range(2, int(n**0.5) + 1):
-            if is_prime[i]:
-                for j in range(i * i, n, i):
-                    is_prime[j] = False
-        
-        return sum(is_prime)
+        return self.total / len(self.queue)
+
+# 示例用法
+m_avg = MovingAverage(3)
+print(m_avg.next(1))  # 返回 1.0
+print(m_avg.next(10)) # 返回 5.5
+print(m_avg.next(3))  # 返回 4.66667
+print(m_avg.next(5))  # 返回 6.0
